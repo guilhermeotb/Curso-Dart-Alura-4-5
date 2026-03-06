@@ -11,7 +11,8 @@ class AccountService {
    "https://api.github.com/gists/b5e5988083befbf76bfc7e34c6f518d1";
 
 
-  Future<List<dynamic>> resquestDataAsync() async {
+  Future<List<dynamic>> getAll() async {
+
 
   Response response = await get(Uri.parse(url));
   
@@ -21,8 +22,8 @@ class AccountService {
 
 }
 
-sendDataAsync(Map<String, dynamic> mapAccount) async{
-  List<dynamic> listAccounts = await resquestDataAsync();
+addAccount(Map<String, dynamic> mapAccount) async{
+  List<dynamic> listAccounts = await getAll();
   listAccounts.add(mapAccount);
   String content = json.encode(listAccounts);
   
