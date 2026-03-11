@@ -1,23 +1,26 @@
 class Account {
   String id;
   String name;
-  String lastname;
+  String lastName;
   double balance;
 
   Account({
     required this.id,
     required this.name,
-    required this.lastname,
+    required this.lastName,
     required this.balance,
   });
 
 
   factory Account.fromMap(Map<String, dynamic> map) {
+    final dynamic rawLastName = map["lastName"] ?? map["lastname"];
+    final dynamic rawBalance = map["balance"];
+
     return Account(
-      id: map["id"],
-      name: map["name"],
-      lastname: map["lastname"],
-      balance: map["balance"],
+      id: map["id"] as String,
+      name: map["name"]as String,
+      lastName: rawLastName as String,
+      balance: (rawBalance as num).toDouble(),
     );
   }
 
@@ -26,9 +29,14 @@ class Account {
     return {
       "id": id,
       "name": name,
-      "lastname": lastname,
+      "lastName": lastName,
       "balance": balance,
     };
+  }
+
+  @override
+  String toString() {
+    return 'Account(id: $id, name: $name, lastName: $lastName, balance: $balance)';
   }
 
 }
