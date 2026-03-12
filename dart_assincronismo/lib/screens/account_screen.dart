@@ -62,9 +62,14 @@ class AccountScreen {
   }
 
   Future<void> _getAllAccounts() async {
+
+    try{
     List<Account> listAccounts = await _accountService.getAll();
     for (Account account in listAccounts) {
       print(account);
+    }
+    } on Exception {
+      print("Ocorreu um erro ao buscar as contas. Tente novamente mais tarde.");
     }
   }
 
