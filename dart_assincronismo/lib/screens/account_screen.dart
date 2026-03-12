@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:dart_assincronismo/services/account_service.dart';
+import 'package:uuid/uuid.dart';
 
 import '../models/account.dart';
 
@@ -62,7 +63,9 @@ class AccountScreen {
 
   Future<void> _getAllAccounts() async {
     List<Account> listAccounts = await _accountService.getAll();
-    print(listAccounts);
+    for (Account account in listAccounts) {
+      print(account);
+    }
   }
 
   Future<void> _addNewAccount() async {
@@ -91,7 +94,7 @@ class AccountScreen {
     }
 
     Account account = Account(
-      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      id: Uuid().v1(),
       name: name,
       lastName: lastName,
       balance: balance,

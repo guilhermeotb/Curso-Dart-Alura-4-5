@@ -38,7 +38,7 @@ class AccountService {
       listContent.add(account.toMap());
     }
 
-    String content = json.encode(listContent);
+    String content = JsonEncoder.withIndent('  ').convert(listContent);
 
     Response response = await post(
       Uri.parse(url),
@@ -69,7 +69,7 @@ class AccountService {
 
     List<Map<String, dynamic>> listContent =
         listAccounts.map((account) => account.toMap()).toList();
-    String content = json.encode(listContent);
+    String content = JsonEncoder.withIndent('  ').convert(listContent);
 
     Response response = await patch(
       Uri.parse(url),

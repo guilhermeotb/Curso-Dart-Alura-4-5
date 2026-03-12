@@ -36,7 +36,7 @@ class Account {
 
   @override
   String toString() {
-    return 'Account(id: $id, name: $name, lastName: $lastName, balance: $balance)';
+    return 'ID: $id | Nome: $name $lastName | Saldo: R\$ ${balance.toStringAsFixed(2)}';
   }
 
 }
