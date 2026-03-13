@@ -1,9 +1,8 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:dart_assincronismo/services/account_service.dart';
+import 'package:http/http.dart';
 import 'package:uuid/uuid.dart';
-
 import '../models/account.dart';
 
 class AccountScreen {
@@ -22,9 +21,9 @@ class AccountScreen {
     bool isRunning = true;
     while (isRunning) {
       print("Como eu posso te ajudar? (digite o número desejado)");
-      print("1 - 👀 Ver todas sua contas.");
-      print("2 - ➕ Adicionar nova conta.");
-      print("3 - 🗑️ Excluir conta.");
+      print("1 - 👀  Ver todas sua contas.");
+      print("2 - ➕  Adicionar nova conta.");
+      print("3 - 🗑️  Excluir conta.");
       print("4 - Sair\n");
 
       String? input = stdin.readLineSync();
@@ -64,14 +63,29 @@ class AccountScreen {
   Future<void> _getAllAccounts() async {
 
     try{
+
     List<Account> listAccounts = await _accountService.getAll();
-    for (Account account in listAccounts) {
-      print(account);
-    }
+    for (Account account in listAccounts) {print(account);}
+
+    } on ClientException catch (clientException) {
+
+      print("Não foi possível acessar o servidor. Tente novamente mais tarde.");
+      print(clientException.message);
+      print(clientException.uri);
+
     } on Exception {
-      print("Ocorreu um erro ao buscar as contas. Tente novamente mais tarde.");
+
+      print("Ocorreu um erro inesperado. Tente novamente mais tarde.");
+
+    } finally {
+
+      print("${DateTime.now()} | Ocorreu uma tentativa de consulta.");
+
     }
+
   }
+
+
 
   Future<void> _addNewAccount() async {
     print("Qual o nome da pessoa?");
