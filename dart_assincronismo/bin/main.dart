@@ -8,7 +8,7 @@ Future<void> main() async {
   try {
     print('Iniciando transferencia...');
     await TransactionService().makeTransaction(
-      idSender: "ID001",
+      idSender: "ID888",
       idReceiver: "ID002",
       amount: 5,
     );
