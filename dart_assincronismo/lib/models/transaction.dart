@@ -33,14 +33,20 @@ class Transaction {
   factory Transaction.fromMap(Map<String, dynamic> map) {
     final dynamic rawDate = map["date"];
     final dynamic rawAmount = map["amount"];
+    final dynamic rawTaxes = map["taxes"];
+
+    final DateTime parsedDate =
+        rawDate is int || rawDate is num
+            ? DateTime.fromMillisecondsSinceEpoch((rawDate as num).toInt())
+            : DateTime.parse(rawDate as String);
 
     return Transaction(
-      id: map["id"] as String,
-      senderAccountId: map["senderAccountId"] as String,
-      receiverAccountId: map["receiverAccountId"] as String,
-      date: DateTime.parse(rawDate as String),
+      id: map["id"].toString(),
+      senderAccountId: map["senderAccountId"].toString(),
+      receiverAccountId: map["receiverAccountId"].toString(),
+      date: parsedDate,
       amount: (rawAmount as num).toDouble(),
-      taxes: map["taxes"] as double,
+      taxes: (rawTaxes as num).toDouble(),
     );
   }
 
