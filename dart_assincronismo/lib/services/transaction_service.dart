@@ -25,13 +25,13 @@ class TransactionService {
     List<Account> listAccounts = await _accountService.getAll();
 
      if (listAccounts.where((acc) => acc.id == idSender).isEmpty) {
-      return null;
+      throw Exception("O remetente não existe!");
     }
 
     Account senderAccount = listAccounts.firstWhere( (acc) => acc.id == idSender,);
 
       if (listAccounts.where((acc) => acc.id == idReceiver).isEmpty) {
-      return null;
+      throw Exception("O destinatário não existe!");
     }
 
     Account receiverAccount = listAccounts.firstWhere((acc) => acc.id == idReceiver,);
@@ -40,10 +40,11 @@ class TransactionService {
   double taxes = calculateTaxesByAccount(
       sender: senderAccount,
       amount: amount,
+
     );
 
     if (senderAccount.balance < amount + taxes) {
-      return null;
+      throw Exception("Saldo insuficiente!");
     }
 
     senderAccount.balance -= (amount + taxes);
