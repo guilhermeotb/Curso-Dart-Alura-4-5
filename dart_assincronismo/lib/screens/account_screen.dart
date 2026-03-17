@@ -114,6 +114,7 @@ class AccountScreen {
 
     Account account = Account(
       id: Uuid().v1(),
+      accountType: "Brigadeiro",
       name: name,
       lastName: lastName,
       balance: balance,

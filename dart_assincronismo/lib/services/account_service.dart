@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:dart_assincronismo/api_key.dart';
 import 'package:dart_assincronismo/models/account.dart';
 import 'package:http/http.dart';
@@ -32,8 +31,11 @@ class AccountService {
   addAccount(Account account) async{
     List<Account> listAccounts = await getAll();
     listAccounts.add(account);
-    List<Map<String, dynamic>> listContent = [];
+    save(listAccounts, accountName: account.name);
+  }
 
+  save(List<Account> listAccounts, {String accountName = ""}) async {
+    List<Map<String, dynamic>> listContent = [];
     for (Account account in listAccounts) {
       listContent.add(account.toMap());
     }
@@ -45,7 +47,7 @@ class AccountService {
       headers: {"Authorization": "Bearer $githubApiKey"},
       body: json.encode({
         "description": "account.json",
-    "public" : true,
+        "public": true,
         "files": {
           "accounts.json": {"content": content},
         },
@@ -53,15 +55,13 @@ class AccountService {
     );
 
     if (response.statusCode.toString()[0] == "2") {
-      _streamController.add(
-        "${DateTime.now()} | Requisição de adição bem sucedida (${account.name}).",
-      );
+      _streamController.add("${DateTime.now()} | Requisição adição bem sucedida ($accountName).");
     } else {
-      _streamController.add(
-        "${DateTime.now()} | Requisição falhou. (${account.name}).",
-      );
+      _streamController.add("${DateTime.now()} | Requisição falhou ($accountName).");
     }
   }
+
+
 
   deleteAccount(String accountId) async {
     List<Account> listAccounts = await getAll();
@@ -91,4 +91,24 @@ class AccountService {
       );
     }
   }
-}
+
+
+
+
+
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+  

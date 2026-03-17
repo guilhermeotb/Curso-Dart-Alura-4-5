@@ -8,7 +8,7 @@
             "program": "bin/main.dart",
             "args": [],
             "toolArgs": [],
-            "console": "terminal"
+            "console": "terminal",
         }
     ]
 }
