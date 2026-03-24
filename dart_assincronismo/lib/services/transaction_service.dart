@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:dart_assincronismo/api_key.dart';
+import 'package:dart_assincronismo/exceptions/transaction_exceptions.dart';
 import 'package:dart_assincronismo/helpers/helper_taxes.dart';
 import 'package:dart_assincronismo/models/account.dart';
 import 'package:dart_assincronismo/models/transaction.dart';
@@ -16,7 +17,7 @@ class TransactionService {
   final AccountService _accountService = AccountService();
   String url = "https://api.github.com/gists/413c0aefe6c6abc464581c29029c8ace";
   
-  makeTransaction({
+  Future<void>makeTransaction({
     required String idSender,
     required String idReceiver,
     required double amount,
@@ -24,17 +25,15 @@ class TransactionService {
 
     List<Account> listAccounts = await _accountService.getAll();
 
-     if (listAccounts.where((acc) => acc.id == idSender).isEmpty) {
-      throw Exception("O remetente não existe!");
-    }
+    Account senderAccount = listAccounts.firstWhere(
+      (acc) => acc.id == idSender,
+      orElse: () => throw SenderNotExistException(),
+    );
 
-    Account senderAccount = listAccounts.firstWhere( (acc) => acc.id == idSender,);
-
-      if (listAccounts.where((acc) => acc.id == idReceiver).isEmpty) {
-      throw Exception("O destinatário não existe!");
-    }
-
-    Account receiverAccount = listAccounts.firstWhere((acc) => acc.id == idReceiver,);
+    Account receiverAccount = listAccounts.firstWhere(
+      (acc) => acc.id == idReceiver,
+      orElse: () => throw ReceiverNotExistException(),
+    );
 
 
   double taxes = calculateTaxesByAccount(
@@ -44,7 +43,11 @@ class TransactionService {
     );
 
     if (senderAccount.balance < amount + taxes) {
-      throw Exception("Saldo insuficiente!");
+      throw InsufficientBalanceException(
+        cause: senderAccount,
+        amount: amount,
+        taxes: taxes,
+      );
     }
 
     senderAccount.balance -= (amount + taxes);

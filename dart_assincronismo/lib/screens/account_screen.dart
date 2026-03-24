@@ -14,7 +14,7 @@ class AccountScreen {
     });
   }
 
-  void runChatBot() async {
+  Future<void> runChatBot() async {
     print("Bom dia! Eu sou o Lewis, assistente do Banco d'Ouro!");
     print("Que bom te ter aqui com a gente.\n");
 
